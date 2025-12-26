@@ -1,5 +1,6 @@
 import ScrollReveal from "@/components/ScrollReveal";
 import { motion } from "framer-motion";
+import { useAppSelector } from '../../store/store';
 
 const chapters = [
   {
@@ -35,6 +36,8 @@ const chapters = [
 ];
 
 const ChaptersSection = () => {
+  const homeContent = useAppSelector(state => state.homeContent.homeContent)
+  const allChapters = homeContent?.chapters ?? chapters
   return (
     <section className="section-padding bg-background">
       <div className="section-container">
@@ -48,7 +51,7 @@ const ChaptersSection = () => {
         </ScrollReveal>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {chapters.map((chapter, index) => (
+          {allChapters.map((chapter, index) => (
             <ScrollReveal key={chapter.number} delay={index * 0.08}>
               <motion.div
                 whileHover={{ y: -4 }}

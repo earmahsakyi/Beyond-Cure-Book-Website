@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './authSlice';
+import  homeContentReducer  from './homeContentSlice';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 
 // Configure the store
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    homeContent: homeContentReducer,
     
   },
 });

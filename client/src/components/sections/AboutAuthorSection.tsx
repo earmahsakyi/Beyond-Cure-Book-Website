@@ -2,8 +2,19 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import authorPhoto from "@/assets/Profile.jpeg";
+import { useAppSelector } from '../../store/store';
+
+const Author = {
+  name: "Dr. Henry",
+  shortBio: "A sought-after speaker on antibiotic resistance and medical decision-making, Henry brings both clinical expertise and a gift for storytelling to one of medicine's most pressing challenges.",
+  longBio : "Henry is an infectious disease physician and antimicrobial stewardship leader with over fifteen years of experience at the intersection of clinical care, research, and education. His work has been published in leading medical journals, and he has consulted for hospitals and health systems across the country.",
+  authorImage: "",
+  readMoreLink: "",
+}
 
 const AboutAuthorSection = () => {
+  const homeContent = useAppSelector(state => state.homeContent.homeContent);
+  const author = homeContent?.aboutAuthor ?? Author;
   return (
     <section className="section-padding bg-background">
       <div className="section-container">
@@ -31,22 +42,18 @@ const AboutAuthorSection = () => {
               </ScrollReveal>
 
               <ScrollReveal delay={0.2}>
-                <h2 className="text-foreground text-3xl mb-6">Henry</h2>
+                <h2 className="text-foreground text-3xl mb-6">{author.name}</h2>
               </ScrollReveal>
 
               <ScrollReveal delay={0.3}>
                 <p className="text-foreground/85 leading-relaxed mb-4">
-                  Henry is an infectious disease physician and antimicrobial stewardship leader with over 
-                  fifteen years of experience at the intersection of clinical care, research, and education. 
-                  His work has been published in leading medical journals, and he has consulted for hospitals 
-                  and health systems across the country.
+                 {author.longBio}
                 </p>
               </ScrollReveal>
 
               <ScrollReveal delay={0.4}>
                 <p className="text-foreground/85 leading-relaxed mb-6">
-                  A sought-after speaker on antibiotic resistance and medical decision-making, Henry brings 
-                  both clinical expertise and a gift for storytelling to one of medicine's most pressing challenges.
+                 {author.shortBio}
                 </p>
               </ScrollReveal>
 

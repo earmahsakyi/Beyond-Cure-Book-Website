@@ -1,5 +1,6 @@
 import ScrollReveal from "@/components/ScrollReveal";
 import { Quote } from "lucide-react";
+import { useAppSelector } from '../../store/store';
 
 const endorsements = [
   {
@@ -23,6 +24,8 @@ const endorsements = [
 ];
 
 const EndorsementsSection = () => {
+  const homeContent = useAppSelector(state => state.homeContent.homeContent);
+  const allEndorsement = homeContent?.endorsements ?? endorsements;
   return (
     <section className="section-padding bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
       {/* Decorative aurora element */}
@@ -45,15 +48,15 @@ const EndorsementsSection = () => {
               <Quote className="absolute top-6 left-6 w-10 h-10 text-primary/20" />
               <blockquote className="relative">
                 <p className="text-xl md:text-2xl font-serif italic text-foreground leading-relaxed mb-6 pl-8">
-                  "{endorsements[0].quote}"
+                  "{allEndorsement[0].quote}"
                 </p>
                 <footer className="pl-8">
                   <cite className="not-italic">
                     <span className="block text-lg font-semibold text-foreground">
-                      {endorsements[0].author}
+                      {allEndorsement[0].author}
                     </span>
                     <span className="text-muted-foreground text-sm">
-                      {endorsements[0].title}
+                      {allEndorsement[0].title}
                     </span>
                   </cite>
                 </footer>
@@ -64,7 +67,7 @@ const EndorsementsSection = () => {
 
         {/* Secondary quotes */}
         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {endorsements.slice(1).map((endorsement, index) => (
+          {allEndorsement.slice(1).map((endorsement, index) => (
             <ScrollReveal key={endorsement.author} delay={0.2 + index * 0.1}>
               <div className="p-6 rounded-xl bg-card/50 border border-border/30">
                 <p className="text-foreground/90 font-serif italic mb-4 leading-relaxed">

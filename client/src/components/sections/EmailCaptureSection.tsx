@@ -4,11 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FileCheck, ArrowRight, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAppSelector } from '../../store/store';
 
+const allEmail = {
+  title: "Free Antibiotic Safety Checklist",
+  description: "A practical guide to the questions you should ask before starting or stopping any antibiotic. Designed for patients and caregivers",
+  privacyNote: "We respect your privacy. Occasional updates about the book and antibiotic stewardship unsubscribe anytime."
+}
 const EmailCaptureSection = () => {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
+  const homeContent = useAppSelector(state => state.homeContent.homeContent);
+  const emailCapture = homeContent?.emailCapture ?? allEmail
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,14 +45,13 @@ const EmailCaptureSection = () => {
 
           <ScrollReveal delay={0.1}>
             <h2 className="text-foreground mb-4">
-              Free Antibiotic Safety Checklist
+              {emailCapture.title}
             </h2>
           </ScrollReveal>
 
           <ScrollReveal delay={0.2}>
             <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-              A practical guide to the questions you should ask before starting—or stopping—any antibiotic. 
-              Designed for patients and caregivers.
+             {emailCapture.description}
             </p>
           </ScrollReveal>
 
@@ -74,7 +81,7 @@ const EmailCaptureSection = () => {
 
           <ScrollReveal delay={0.4}>
             <p className="text-xs text-muted-foreground mt-4">
-              We respect your privacy. Occasional updates about the book and antibiotic stewardship—unsubscribe anytime.
+            {emailCapture.privacyNote}
             </p>
           </ScrollReveal>
         </div>

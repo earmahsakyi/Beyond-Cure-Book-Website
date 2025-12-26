@@ -1,46 +1,87 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Save, X, ArrowLeft, Upload, User } from "lucide-react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { getHomeContent,updateHomeContent } from "@/store/homeContentSlice";
+import { useAppDispatch , useAppSelector } from '../../store/store'
 
 interface AboutContent {
-  authorName: string;
+  name: string;
   shortBio: string;
   longBio: string;
-  imageUrl: string;
+  authorImage: string;
+  readMoreLink: string ;
 }
 
 const initialContent: AboutContent = {
-  authorName: "Dr. Sarah Mitchell, MD",
+  name: "Dr. Sarah Mitchell, MD",
   shortBio: "Board-certified physician and chronic illness advocate with over 20 years of experience in patient care and wellness education.",
   longBio: `Dr. Sarah Mitchell is a board-certified internal medicine physician who has dedicated her career to helping patients navigate the complex journey of chronic illness management.
 
 After her own experience with a chronic health condition, she gained unique insight into the challenges patients face daily. This personal journey inspired her to write "Beyond the Cure" – a comprehensive guide that bridges the gap between medical treatment and holistic wellness.
 
 Dr. Mitchell currently practices at Wellness Medical Center and regularly speaks at conferences about patient-centered care. She lives in Boston with her family and enjoys hiking, reading, and cooking healthy meals.`,
-  imageUrl: "",
+  authorImage: "",
+  readMoreLink: "",
+
 };
 
 const AboutEditor = () => {
+  const homeContent = useAppSelector(state=> state.homeContent.homeContent);
+  const dispatch = useAppDispatch();
   const [content, setContent] = useState<AboutContent>(initialContent);
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  useEffect(()=> {
+    if(homeContent === null){
+      dispatch(getHomeContent())
+    }
+  },[dispatch]);
+
+  useEffect(()=> {
+    if(homeContent?.aboutAuthor){
+      setContent(homeContent.aboutAuthor)
+    }
+  },[homeContent])
+
   const handleChange = (field: keyof AboutContent, value: string) => {
     setContent((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = async () => {
+   const handleSave = async () => {
+    if (!homeContent) {
+      toast({
+        title: "Error",
+        description: "Content not loaded yet",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsSaving(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsSaving(false);
-    toast({
-      title: "Content updated successfully",
-      description: "Your author bio has been saved.",
-    });
+    try {
+      await dispatch(updateHomeContent({
+        ...homeContent,
+        aboutAuthor: content
+      })).unwrap();
+
+      toast({
+        title: "Success!",
+        description: "Author bio has been updated.",
+      });
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: err as string,
+        variant: "destructive"
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCancel = () => {
@@ -67,9 +108,9 @@ const AboutEditor = () => {
             <label className="admin-label">Author Photo</label>
             <div className="flex items-center gap-6">
               <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-primary">
-                {content.imageUrl ? (
+                {content.authorImage ? (
                   <img
-                    src={content.imageUrl}
+                    src={content.authorImage}
                     alt="Author"
                     className="h-full w-full rounded-full object-cover"
                   />
@@ -97,8 +138,8 @@ const AboutEditor = () => {
             <input
               id="authorName"
               type="text"
-              value={content.authorName}
-              onChange={(e) => handleChange("authorName", e.target.value)}
+              value={content.name}
+              onChange={(e) => handleChange("name", e.target.value)}
               className="admin-input"
               placeholder="Enter author name"
             />

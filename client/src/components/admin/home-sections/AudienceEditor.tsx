@@ -2,6 +2,9 @@ import { Plus, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { AUDIENCE_ICONS } from "./AudienceIcons";
+
+
 
 interface AudienceItem {
   title: string;
@@ -79,16 +82,19 @@ export const AudienceEditor = ({ content, onChange }: AudienceEditorProps) => {
                   />
                 </div>
                 <div>
-                  <label className="admin-label">Icon Name</label>
-                  <Input
-                    value={item.icon}
-                    onChange={(e) => handleChange(index, "icon", e.target.value)}
-                    placeholder="e.g., Users, Heart, Stethoscope"
-                    className="admin-input"
-                  />
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Lucide icon name
-                  </p>
+                  <label className="admin-label">Audience Type</label>
+                  <select
+                      value={item.icon}
+                      onChange={(e) => handleChange(index, "icon", e.target.value)}
+                      className="admin-input"
+                    >
+                      {Object.entries(AUDIENCE_ICONS).map(([key, value]) => (
+                        <option key={key} value={key}>
+                          {value.label}
+                        </option>
+                      ))}
+                    </select>
+                    
                 </div>
               </div>
               <div>

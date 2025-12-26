@@ -4,8 +4,24 @@ import ParticlesBackground from "@/components/ParticlesBackground";
 import TypewriterText from "@/components/TypewriterText";
 import { ShoppingCart, FileText } from "lucide-react";
 import bookcover from "@/assets/bookcover.png";
+import {useAppSelector } from '../../store/store';
+
+const DEFAULT_HERO = {
+availabilityText:"Available on Amazon, Barnes & Noble, and independent bookstores",
+badgeText: "A New Medical Nonfiction ",
+bookCoverImage: "/bookcover.png",
+description: "A deeply human exploration of antimicrobial resistance where science meets story, and each patient reminds us why medicine is both art and evidence.",
+primaryCtaLink: "#",
+primaryCtaText: "Buy the Book",
+secondaryCtaLink: "#",
+secondaryCtaText:"Get Free Safety Guide",
+subtitle:"What Antibiotics Teach Us About Medicine, Mortality, and What It Means to Heal",
+title: "Beyond the Cure",
+};
 
 const HeroSection = () => {
+  const homeContent = useAppSelector(state => state.homeContent.homeContent)
+  const hero = homeContent?.hero ?? DEFAULT_HERO;
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Aurora gradient background */}
@@ -28,13 +44,13 @@ const HeroSection = () => {
               transition={{ duration: 0.6 }}
             >
               <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-                A New Medical Nonfiction
+                {hero.badgeText}
               </span>
             </motion.div>
 
             <h1 className="text-foreground mb-6">
               <TypewriterText 
-                text="Beyond the Cure" 
+                text={hero.title} 
                 className="block"
                 delay={200}
               />
@@ -46,7 +62,7 @@ const HeroSection = () => {
               transition={{ duration: 0.6, delay: 1.2 }}
               className="text-xl md:text-2xl text-muted-foreground font-serif italic mb-6"
             >
-              What Antibiotics Teach Us About Medicine, Mortality, and What It Means to Heal
+              {hero.subtitle}
             </motion.p>
 
             <motion.p
@@ -55,8 +71,7 @@ const HeroSection = () => {
               transition={{ duration: 0.6, delay: 1.4 }}
               className="text-lg text-foreground/80 mb-8 max-w-xl"
             >
-              A deeply human exploration of antimicrobial resistance where science meets story, 
-              and each patient reminds us why medicine is both art and evidence.
+              {hero.description}
             </motion.p>
 
             <motion.div
@@ -65,13 +80,15 @@ const HeroSection = () => {
               transition={{ duration: 0.6, delay: 1.6 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Button variant="hero" size="xl" className="group">
+              <Button variant="hero" size="xl" className="group" onClick={() => {
+                window.location.href = hero.primaryCtaLink}}>
                 <ShoppingCart className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
-                Buy the Book
+                {hero.primaryCtaText}
               </Button>
-              <Button variant="hero-secondary" size="xl">
+              <Button variant="hero-secondary" size="xl" onClick={()=>{
+                window.location.href = hero.secondaryCtaLink}}>
                 <FileText className="mr-2 h-5 w-5" />
-                Get Free Safety Guide
+                {hero.secondaryCtaText}
               </Button>
             </motion.div>
 
@@ -81,7 +98,7 @@ const HeroSection = () => {
               transition={{ duration: 0.6, delay: 1.8 }}
               className="text-sm text-muted-foreground mt-6"
             >
-              Available on Amazon, Barnes & Noble, and independent bookstores
+             {hero.availabilityText}
             </motion.p>
           </div>
 

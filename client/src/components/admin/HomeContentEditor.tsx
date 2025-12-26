@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Save, X, ArrowLeft } from "lucide-react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
+import { getHomeContent,updateHomeContent } from "@/store/homeContentSlice";
+import { useAppDispatch , useAppSelector } from '../../store/store';
 import {
   HeroEditor,
   AboutBookEditor,
@@ -131,24 +133,47 @@ const initialContent: HomeContent = {
 };
 
 const HomeContentEditor = () => {
+  const dispatch = useAppDispatch()
+  const homeContent = useAppSelector(state=>state.homeContent.homeContent)
   const [content, setContent] = useState<HomeContent>(initialContent);
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const handleSave = async () => {
+  const handleSave = async ():Promise<void> => {
     setIsSaving(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsSaving(false);
-    toast({
+    try{
+      await dispatch(updateHomeContent(content)).unwrap();
+      toast({
       title: "Content updated successfully",
       description: "Your home page changes have been saved.",
+      })
+    }catch (err){
+      toast({
+      title: "Save failed",
+      description: err as string,
+      variant: "destructive",
     });
+    }finally{
+       setIsSaving(false);
+    }
   };
 
   const handleCancel = () => {
     navigate("/dashboard");
   };
+
+  useEffect(()=> {
+    if(homeContent === null){
+      dispatch(getHomeContent())
+    }
+  },[dispatch,homeContent]);
+
+  useEffect(() => {
+  if (homeContent) {
+    setContent(homeContent);
+  }
+}, [homeContent]);
 
   return (
     <AdminLayout

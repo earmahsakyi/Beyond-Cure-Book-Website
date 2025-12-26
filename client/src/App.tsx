@@ -11,7 +11,6 @@ import store, { useAppDispatch } from './store/store';
 import NotFound from "./pages/NotFound";
 import Login from "./components/auth/Login";
 import ForgotPassword from "./components/auth/ForgotPassword";
-import UI from "./components/auth/UI";
 import ResetPassword from "./components/auth/ResetPassword";
 import RequestOTP from "./components/auth/RequestOTP";
 import UnlockAccount from "./components/auth/UnlockAccount";
@@ -37,7 +36,12 @@ const AppInner = () => {
   },[dispatch])
 
   return (
-      <BrowserRouter>
+      <BrowserRouter
+       future={{
+      v7_relativeSplatPath: true,
+      v7_startTransition: true,
+    }}
+      >
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />

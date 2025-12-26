@@ -28,7 +28,8 @@ exports.getLoginUser = async(req, res) => {
             succes:true,
             _id: admin._id,
             email:admin.email,
-            role:admin.role
+            role:admin.role,
+            name: admin.name
         })
 
     }catch(err){

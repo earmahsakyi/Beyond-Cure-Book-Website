@@ -36,6 +36,7 @@ interface UserResponse {
     _id: string;
     email:string;
     role: 'Student' | 'Admin';
+    name: string
 }
 
 interface MessageResponse {
@@ -79,13 +80,7 @@ interface UnlockAccountData {
   secretKey: string;
 }
 
-// Error response type
-interface ErrorResponse {
-  msg?: string;
-  error?: string;
-  Error?: string;
-  errors?: Array<{ msg: string }>;
-}
+
 
 //helper function 
 const setAuthToken = (token : string | null): void => {
@@ -93,7 +88,7 @@ const setAuthToken = (token : string | null): void => {
         axios.defaults.headers.common['x-auth-token'] = token;
         localStorage.setItem('token',token);
     }else {
-        axios.defaults.headers.common['x-auth-token'] = token;
+       delete axios.defaults.headers.common['x-auth-token'];
         localStorage.removeItem('token');
     }
 } 
@@ -328,7 +323,8 @@ const authSlice = createSlice({
             state.user = {
                 _id: action.payload._id,
                 email: action.payload.email,
-                role: action.payload.role
+                role: action.payload.role,
+                name: action.payload.name
             }
         })
         .addCase(loadUser.rejected, (state, action) => {
