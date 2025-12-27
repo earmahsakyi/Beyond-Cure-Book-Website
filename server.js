@@ -21,6 +21,8 @@ app.get('/', (req, res) => res.send({msg: 'Welcome to Bookwebsite API...'}));
 //Define routes
 app.use('/api/auth',require('./route/auth'));
 app.use('/api/home-content',require('./route/homeContent'));
+app.use('/api/email-subscribers',require('./route/emailSubscribe'));
+app.use('/api/contact',require('./route/contactMessage'));
 
 
 const PORT = process.env.PORT || 5000;

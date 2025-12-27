@@ -16,7 +16,7 @@ const AboutAuthorSection = () => {
   const homeContent = useAppSelector(state => state.homeContent.homeContent);
   const author = homeContent?.aboutAuthor ?? Author;
   return (
-    <section className="section-padding bg-background">
+    <section className="section-padding bg-background" id="author">
       <div className="section-container">
         <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-[200px,1fr] gap-8 md:gap-12 items-start">

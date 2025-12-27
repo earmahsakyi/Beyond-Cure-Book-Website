@@ -16,7 +16,7 @@ const AboutBookSection = () => {
   const homeContent = useAppSelector(state => state.homeContent.homeContent);
   const aboutBook = homeContent?.aboutBook ?? AboutBook
   return (
-    <section className="section-padding bg-background relative overflow-hidden">
+    <section className="section-padding bg-background relative overflow-hidden" id="about">
       {/* Subtle decorative elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-primary/5 to-transparent rounded-full blur-3xl" />
       

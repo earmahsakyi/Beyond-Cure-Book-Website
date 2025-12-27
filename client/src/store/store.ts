@@ -1,6 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './authSlice';
 import  homeContentReducer  from './homeContentSlice';
+import emailReducer from './emailSubscribeSlice';
+import contactMessageReducer from './contactMessageSlice';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 
 // Configure the store
@@ -8,6 +10,8 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     homeContent: homeContentReducer,
+    email:emailReducer,
+    contactMessage: contactMessageReducer,
     
   },
 });

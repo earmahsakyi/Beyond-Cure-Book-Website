@@ -2,6 +2,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Mic } from "lucide-react";
 import { useAppSelector } from '../../store/store';
+import { useNavigate } from "react-router-dom";
 
 const myCta = {
   title : "Ready to Go Beyond?",
@@ -15,7 +16,7 @@ const myCta = {
 }
 
 const FinalCTASection = () => {
-
+  const navigate = useNavigate();
    const homeContent = useAppSelector(state => state.homeContent.homeContent);
    const finalCTA = homeContent?.finalCta ?? myCta;
 
@@ -48,7 +49,7 @@ const FinalCTASection = () => {
                 {finalCTA.primaryCtaText}
               </Button>
               <Button variant="hero-secondary" size="xl" className="group" onClick={()=>
-                window.location.href = finalCTA.secondaryCtaLink
+               navigate('/contact')
               }>
                 <Mic className="mr-2 h-5 w-5" />
                 {finalCTA.secondaryCtaText}
@@ -59,7 +60,7 @@ const FinalCTASection = () => {
           <ScrollReveal delay={0.3}>
             <p className="text-sm text-muted-foreground mt-8">
               For press inquiries, bulk orders, or speaking engagements, 
-              <a href="mailto:hello@beyondthecure.com" className="text-primary hover:underline ml-1">
+              <a href="/contact" className="text-primary hover:underline ml-1">
                 contact us directly
               </a>.
             </p>

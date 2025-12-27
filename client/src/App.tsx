@@ -20,7 +20,10 @@ import AboutEditor from "./components/admin/AboutEditor";
 import ResourcesManager from "./components/admin/ResourcesManager";
 import MediaSpeakingEditor from "./components/admin/MediaSpeakingEditor";
 import ContactMessages from "./components/admin/ContactMessages";
+import EmailSubscribers from "./components/admin/EmailSubscribers";
 import PrivateRoute from "./components/routing/PrivateRoute";
+import ContactForm from "./components/sections/ContactForm";
+import MediaSpeaking from "./components/sections/MediaSpeaking";
 
 const queryClient = new QueryClient();
 
@@ -45,7 +48,9 @@ const AppInner = () => {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/contact" element={<ContactForm/>} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/media" element={<MediaSpeaking />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/otp-request" element={<RequestOTP />} />
           <Route path="/account-unlock" element={<UnlockAccount />} />
@@ -54,6 +59,7 @@ const AppInner = () => {
           <Route path="/resources" element={<PrivateRoute><ResourcesManager/> </PrivateRoute>} />
           <Route path="/media" element={<PrivateRoute><MediaSpeakingEditor/> </PrivateRoute>} />
           <Route path="/messages" element={<PrivateRoute><ContactMessages/> </PrivateRoute>} />
+          <Route path="/emails" element={<PrivateRoute><EmailSubscribers/> </PrivateRoute>} />
           <Route path="/home-content" element={<PrivateRoute><HomeContentEditor/> </PrivateRoute>} />
 
           

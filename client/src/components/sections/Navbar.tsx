@@ -16,6 +16,8 @@ const navLinks: NavLink[] = [
   { label: "Chapters", href: "#chapters", isExternal: false },
   { label: "Author", href: "#author", isExternal: false },
   { label: "Login", href: "/login", isExternal: false },
+  { label: "Contact", href: "/contact", isExternal: false },
+  { label: "Media & Speaking", href: "/media", isExternal: false },
 ];
 
 const Navbar = () => {

@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Mail, MailOpen, Eye } from "lucide-react";
+import { ArrowLeft, Mail, MailOpen, Eye, Trash2, Loader2 } from "lucide-react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,83 +9,88 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-interface Message {
-  id: string;
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-  date: string;
-  read: boolean;
-}
-
-const initialMessages: Message[] = [
-  {
-    id: "1",
-    name: "Jennifer Adams",
-    email: "jennifer.adams@email.com",
-    subject: "Speaking Request - Healthcare Conference 2024",
-    message: "Dear Dr. Mitchell,\n\nI am the program coordinator for the Annual Healthcare Innovation Conference taking place in Boston this September. We would be honored to have you as our keynote speaker to discuss patient-centered approaches to chronic illness management.\n\nPlease let me know your availability and speaking fee.\n\nBest regards,\nJennifer Adams",
-    date: "2024-01-18",
-    read: false,
-  },
-  {
-    id: "2",
-    name: "Michael Chen",
-    email: "m.chen@hospital.org",
-    subject: "Book Bulk Order Inquiry",
-    message: "Hello,\n\nOur hospital system is interested in ordering copies of 'Beyond the Cure' for our patient education library. Could you provide information about bulk pricing?\n\nThank you,\nMichael Chen",
-    date: "2024-01-17",
-    read: false,
-  },
-  {
-    id: "3",
-    name: "Sarah Thompson",
-    email: "sarah.t@gmail.com",
-    subject: "Thank you for your book",
-    message: "Dr. Mitchell,\n\nI just finished reading your book and wanted to thank you. As someone living with fibromyalgia, your words resonated deeply with me. The chapter on energy management has already made a difference in my daily life.\n\nGratefully,\nSarah",
-    date: "2024-01-15",
-    read: false,
-  },
-  {
-    id: "4",
-    name: "Robert Williams",
-    email: "rwilliams@clinic.com",
-    subject: "Collaboration Opportunity",
-    message: "Dear Dr. Mitchell,\n\nI'm a physician at Wellness Integrative Clinic and would love to discuss potential collaboration on a wellness program for chronic illness patients.\n\nWould you be available for a call?\n\nBest,\nDr. Robert Williams",
-    date: "2024-01-12",
-    read: true,
-  },
-  {
-    id: "5",
-    name: "Emily Foster",
-    email: "emily.foster@magazine.com",
-    subject: "Interview Request - Health Magazine",
-    message: "Hello Dr. Mitchell,\n\nI'm a health writer for Wellness Today magazine. We're preparing a feature on chronic illness management and would love to interview you for the piece.\n\nPlease let me know if you're interested.\n\nEmily Foster\nSenior Health Writer",
-    date: "2024-01-10",
-    read: true,
-  },
-];
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
+  getAllContactMessages,
+  markAsRead,
+  deleteContactMessage,
+  setCurrentMessage,
+  ContactMessage,
+} from "@/store/contactMessageSlice";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 
 const ContactMessages = () => {
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
-  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+  const dispatch = useAppDispatch();
+  const { messages, loading, error, unreadCount, pagination } = useAppSelector(
+    (state) => state.contactMessage
+  );
 
-  const handleMarkAsRead = (id: string) => {
-    setMessages((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, read: true } : m))
-    );
-  };
+  const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [messageToDelete, setMessageToDelete] = useState<string | null>(null);
 
-  const handleViewMessage = (message: Message) => {
-    setSelectedMessage(message);
-    if (!message.read) {
-      handleMarkAsRead(message.id);
+  // Fetch messages on component mount
+  useEffect(() => {
+    dispatch(getAllContactMessages());
+  }, [dispatch]);
+
+  const handleMarkAsRead = async (id: string) => {
+    try {
+      await dispatch(markAsRead({ id, isRead: true })).unwrap();
+    } catch (err) {
+      console.error("Failed to mark message as read:", err);
     }
   };
 
-  const unreadCount = messages.filter((m) => !m.read).length;
+  const handleViewMessage = (message: ContactMessage) => {
+    setSelectedMessage(message);
+    dispatch(setCurrentMessage(message));
+    
+    // Mark as read if unread
+    if (!message.isRead) {
+      handleMarkAsRead(message._id);
+    }
+  };
+
+  const handleDeleteClick = (id: string) => {
+    setMessageToDelete(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (messageToDelete) {
+      try {
+        await dispatch(deleteContactMessage(messageToDelete)).unwrap();
+        setDeleteDialogOpen(false);
+        setMessageToDelete(null);
+        
+        // Close message dialog if the deleted message was open
+        if (selectedMessage?._id === messageToDelete) {
+          setSelectedMessage(null);
+        }
+      } catch (err) {
+        console.error("Failed to delete message:", err);
+      }
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
 
   return (
     <AdminLayout
@@ -100,10 +105,17 @@ const ContactMessages = () => {
         Back to Dashboard
       </Link>
 
+      {/* Error Display */}
+      {error && (
+        <div className="mb-6 rounded-lg border border-destructive/50 bg-destructive/10 p-4">
+          <p className="text-sm text-destructive">{error}</p>
+        </div>
+      )}
+
       {/* Stats */}
       <div className="mb-6 flex items-center gap-4">
         <span className="text-sm text-muted-foreground">
-          {messages.length} messages total
+          {pagination?.total || messages.length} messages total
         </span>
         {unreadCount > 0 && (
           <span className="rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">
@@ -112,100 +124,190 @@ const ContactMessages = () => {
         )}
       </div>
 
-      {/* Messages Table */}
-      <div className="admin-card p-0 overflow-hidden">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th className="w-12"></th>
-              <th>From</th>
-              <th>Subject</th>
-              <th>Date</th>
-              <th className="text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {messages.map((message) => (
-              <tr key={message.id} className={!message.read ? "bg-primary/5" : ""}>
-                <td>
-                  {message.read ? (
-                    <MailOpen className="h-4 w-4 text-muted-foreground" />
-                  ) : (
-                    <Mail className="h-4 w-4 text-primary" />
-                  )}
-                </td>
-                <td>
-                  <div>
-                    <p className={`font-medium ${!message.read ? "text-foreground" : "text-muted-foreground"}`}>
-                      {message.name}
-                    </p>
-                    <p className="text-xs text-muted-foreground">{message.email}</p>
-                  </div>
-                </td>
-                <td>
-                  <p className={`truncate max-w-xs ${!message.read ? "font-medium" : ""}`}>
-                    {message.subject}
-                  </p>
-                </td>
-                <td className="text-muted-foreground">
-                  {new Date(message.date).toLocaleDateString()}
-                </td>
-                <td>
-                  <div className="flex items-center justify-end gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleViewMessage(message)}
+      {/* Loading State */}
+      {loading && messages.length === 0 ? (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      ) : messages.length === 0 ? (
+        <div className="admin-card py-12 text-center">
+          <Mail className="mx-auto h-12 w-12 text-muted-foreground/50" />
+          <h3 className="mt-4 text-lg font-medium">No messages yet</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Messages from your contact form will appear here
+          </p>
+        </div>
+      ) : (
+        /* Messages Table */
+        <div className="admin-card p-0 overflow-hidden">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th className="w-12"></th>
+                <th>From</th>
+                <th>Subject</th>
+                <th>Date</th>
+                <th className="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {messages.map((message) => (
+                <tr
+                  key={message._id}
+                  className={!message.isRead ? "bg-primary/5" : ""}
+                >
+                  <td>
+                    {message.isRead ? (
+                      <MailOpen className="h-4 w-4 text-muted-foreground" />
+                    ) : (
+                      <Mail className="h-4 w-4 text-primary" />
+                    )}
+                  </td>
+                  <td>
+                    <div>
+                      <p
+                        className={`font-medium ${
+                          !message.isRead
+                            ? "text-foreground"
+                            : "text-muted-foreground"
+                        }`}
+                      >
+                        {message.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {message.email}
+                      </p>
+                    </div>
+                  </td>
+                  <td>
+                    <p
+                      className={`truncate max-w-xs ${
+                        !message.isRead ? "font-medium" : ""
+                      }`}
                     >
-                      <Eye className="h-4 w-4" />
-                      View
-                    </Button>
-                    {!message.read && (
+                      {message.subject || "No subject"}
+                    </p>
+                  </td>
+                  <td className="text-muted-foreground">
+                    {formatDate(message.createdAt)}
+                  </td>
+                  <td>
+                    <div className="flex items-center justify-end gap-2">
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleMarkAsRead(message.id)}
+                        onClick={() => handleViewMessage(message)}
                       >
-                        Mark Read
+                        <Eye className="h-4 w-4" />
+                        View
                       </Button>
-                    )}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                      {!message.isRead && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleMarkAsRead(message._id)}
+                          disabled={loading}
+                        >
+                          Mark Read
+                        </Button>
+                      )}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDeleteClick(message._id)}
+                        disabled={loading}
+                      >
+                        <Trash2 className="h-4 w-4 text-destructive" />
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* Message Dialog */}
-      <Dialog open={!!selectedMessage} onOpenChange={() => setSelectedMessage(null)}>
+      <Dialog
+        open={!!selectedMessage}
+        onOpenChange={() => setSelectedMessage(null)}
+      >
         <DialogContent className="max-w-lg">
           <DialogHeader>
-            <DialogTitle>{selectedMessage?.subject}</DialogTitle>
+            <DialogTitle>
+              {selectedMessage?.subject || "No subject"}
+            </DialogTitle>
           </DialogHeader>
           {selectedMessage && (
             <div className="space-y-4">
               <div className="flex items-center justify-between text-sm">
                 <div>
-                  <p className="font-medium text-foreground">{selectedMessage.name}</p>
-                  <p className="text-muted-foreground">{selectedMessage.email}</p>
+                  <p className="font-medium text-foreground">
+                    {selectedMessage.name}
+                  </p>
+                  <p className="text-muted-foreground">
+                    {selectedMessage.email}
+                  </p>
                 </div>
                 <p className="text-muted-foreground">
-                  {new Date(selectedMessage.date).toLocaleDateString()}
+                  {formatDate(selectedMessage.createdAt)}
                 </p>
               </div>
               <div className="rounded-lg border border-border bg-muted/30 p-4">
-                <p className="whitespace-pre-wrap text-sm">{selectedMessage.message}</p>
+                <p className="whitespace-pre-wrap text-sm">
+                  {selectedMessage.message}
+                </p>
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-between">
+                <Button
+                  variant="outline"
+                  onClick={() => handleDeleteClick(selectedMessage._id)}
+                  disabled={loading}
+                >
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  Delete
+                </Button>
                 <Button variant="outline" asChild>
-                  <a href={`mailto:${selectedMessage.email}`}>Reply via Email</a>
+                  <a href={`mailto:${selectedMessage.email}`}>
+                    Reply via Email
+                  </a>
                 </Button>
               </div>
             </div>
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Message</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this message? This action cannot
+              be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              disabled={loading}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete"
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </AdminLayout>
   );
 };

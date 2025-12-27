@@ -13,7 +13,8 @@ import {
   LogOut,
   Menu,
   X,
-  Loader2
+  Loader2,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -22,8 +23,9 @@ const navigation = [
   { name: "Home Page", href: "/home-content", icon: Home },
   { name: "About Author", href: "/about", icon: User },
   { name: "Resources", href: "/resources", icon: BookOpen },
-  { name: "Media & Speaking", href: "/media", icon: Mic2 },
+  // { name: "Media & Speaking", href: "/media", icon: Mic2 },
   { name: "Contact Messages", href: "/messages", icon: Mail },
+  { name: "Email Subscribers", href: "/emails", icon: Users },
 ];
 
 interface AdminSidebarProps {

@@ -45,7 +45,7 @@ const AudienceSection = () => {
   const audiences = homeContent?.audiences ?? defaultAudiences;
 
   return (
-    <section className="section-padding bg-muted/50 relative">
+    <section className="section-padding bg-muted/50 relative" id="audience">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(var(--primary)/0.03),_transparent_70%)]" />
       
       <div className="section-container relative">

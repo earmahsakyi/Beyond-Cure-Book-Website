@@ -1,6 +1,9 @@
 import { Home, User, BookOpen, Mic2, Mail } from "lucide-react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { DashboardCard } from "@/components/admin/DashboardCard";
+import { useEffect } from "react";
+import { useAppSelector,useAppDispatch } from "@/store/store";
+import { getAllContactMessages } from "@/store/contactMessageSlice";
 
 const sections = [
   {
@@ -22,12 +25,12 @@ const sections = [
     icon: BookOpen,
     stats: "12 resources",
   },
-  {
-    title: "Media & Speaking",
-    description: "Edit speaking topics, media kit, and contact information",
-    href: "/media",
-    icon: Mic2,
-  },
+  // {
+  //   title: "Media & Speaking",
+  //   description: "Edit speaking topics, media kit, and contact information",
+  //   href: "/media",
+  //   icon: Mic2,
+  // },
   {
     title: "Contact Messages",
     description: "View and manage messages from website visitors",
@@ -38,6 +41,12 @@ const sections = [
 ];
 
 const Index = () => {
+  const dispatch = useAppDispatch()
+  const unreadCount = useAppSelector(state => state.contactMessage.unreadCount);
+  console.log(unreadCount)
+  useEffect(()=> {
+    dispatch(getAllContactMessages())
+  },[dispatch])
   return (
     <AdminLayout
       title="Dashboard"
@@ -51,7 +60,7 @@ const Index = () => {
         </div>
         <div className="admin-card">
           <p className="text-sm font-medium text-muted-foreground">Unread Messages</p>
-          <p className="mt-1 text-2xl font-bold text-primary">3</p>
+          <p className="mt-1 text-2xl font-bold text-primary">{unreadCount || 0}</p>
         </div>
         <div className="admin-card">
           <p className="text-sm font-medium text-muted-foreground">Last Updated</p>

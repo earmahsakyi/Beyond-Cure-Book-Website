@@ -39,7 +39,7 @@ const ChaptersSection = () => {
   const homeContent = useAppSelector(state => state.homeContent.homeContent)
   const allChapters = homeContent?.chapters ?? chapters
   return (
-    <section className="section-padding bg-background">
+    <section className="section-padding bg-background" id="chapters">
       <div className="section-container">
         <ScrollReveal>
           <div className="text-center mb-16">

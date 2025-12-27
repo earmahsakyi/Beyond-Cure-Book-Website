@@ -101,6 +101,7 @@ const getErrorMessage = (error :unknown): string => {
             axiosError.response?.data?.msg ||
             axiosError.response?.data?.error ||
             axiosError.response?.data?.Error ||
+            axiosError.response.data?.message ||
             axiosError.response?.data?.errors?.[0]?.msg ||
             'An error occurred'
         )
