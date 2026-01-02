@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import ParticlesBackground from "@/components/ParticlesBackground";
 import TypewriterText from "@/components/TypewriterText";
 import { ShoppingCart, FileText } from "lucide-react";
-import bookcover from "@/assets/bookcover.png";
+import bookcover from "../../assets/bookcover.png";
 import {useAppSelector } from '../../store/store';
 
 const DEFAULT_HERO = {
