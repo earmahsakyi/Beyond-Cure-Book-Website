@@ -21,31 +21,31 @@ connectDB();
 app.use(express.json({extended: false}));
 
 // Security middleware
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'"],
-      imgSrc: [
-        "'self'", 
-        "data:", 
-        "https://ui-avatars.com",
-        "https://*.amazonaws.com",
-        "https://s3.amazonaws.com",
-        "https://*.s3.amazonaws.com",
-        "https://beyond-the-cure.s3.us-east-1.amazonaws.com/authors/",
-        "https://beyond-the-cure.s3.us-east-1.amazonaws.com/resources/",
-        "https://beyond-the-cure.s3.amazonaws.com",
-      ],
-      connectSrc: ["'self'","ws:", "wss:"],
-      fontSrc: ["'self'"],
-      objectSrc: ["'none'"],
-      mediaSrc: ["'self'"],
-      frameSrc: ["'none'"],
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: [
+          "'self'",
+          "data:",
+          "blob:",
+          "https://ui-avatars.com",
+          "https://*.amazonaws.com",
+          "https://*.s3.amazonaws.com",
+        ],
+        connectSrc: ["'self'", "ws:", "wss:"],
+        fontSrc: ["'self'", "data:"],
+        objectSrc: ["'none'"],
+        mediaSrc: ["'self'"],
+        frameSrc: ["'none'"],
+      },
     },
-  },
-}));
+  })
+);
+
 
 // Trust proxy - IMPORTANT for getting real IP addresses behind reverse proxies/load balancers
 app.set('trust proxy', 1);
