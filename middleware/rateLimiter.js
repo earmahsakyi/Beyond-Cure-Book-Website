@@ -18,16 +18,16 @@ const apiLimiter = rateLimit({
 
 // Strict rate limiter for auth endpoints (login/register)
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 60 * 60 * 1000, // 1 hour time
   max: 5, // Limit each IP to 5 login attempts per windowMs
-  message: 'Too many login attempts, please try again after 15 minutes.',
+  message: 'Too many login attempts, please try again after 1 hour.',
   standardHeaders: true,
   legacyHeaders: false,
   skipSuccessfulRequests: true, // Don't count successful requests
   handler: (req, res) => {
     res.status(429).json({
       success: false,
-      msg: 'Too many login attempts. Please try again after 15 minutes.',
+      msg: 'Too many login attempts. Please try again after 1 hour.',
       retryAfter: Math.ceil(req.rateLimit.resetTime / 1000)
     });
   }
@@ -50,16 +50,16 @@ const passwordResetLimiter = rateLimit({
 });
 
 // Rate limiter for email verification
-const emailVerificationLimiter = rateLimit({
+const sendMessageLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 5, // 5 attempts per hour
-  message: 'Too many verification attempts, please try again later.',
+  max: 3, // 3 attempts per hour
+  message: 'Too many message attempts, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
     res.status(429).json({
       success: false,
-      msg: 'Too many verification attempts. Please try again after 1 hour.',
+      msg: 'Too many message attempts. Please try again after 1 hour.',
       retryAfter: Math.ceil(req.rateLimit.resetTime / 1000)
     });
   }
@@ -69,5 +69,5 @@ module.exports = {
   apiLimiter,
   authLimiter,
   passwordResetLimiter,
-  emailVerificationLimiter
+  sendMessageLimiter
 };

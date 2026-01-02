@@ -27,7 +27,9 @@ const HomeContentSchema = new mongoose.Schema({
       shortBio: { type: String },
       longBio: { type: String },
       authorImage: { type: String },
-      readMoreLink: { type: String }
+      readMoreLink: { type: String },
+      photoUrl: {type: String},
+      photoKey: {type: String}
     },
 
     audiences: [
