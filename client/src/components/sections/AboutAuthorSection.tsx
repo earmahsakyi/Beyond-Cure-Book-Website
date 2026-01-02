@@ -1,7 +1,6 @@
 import ScrollReveal from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import authorPhoto from "@/assets/Profile.jpeg";
 import { useAppSelector } from '../../store/store';
 
 const Author = {
@@ -10,11 +9,14 @@ const Author = {
   longBio : "Henry is an infectious disease physician and antimicrobial stewardship leader with over fifteen years of experience at the intersection of clinical care, research, and education. His work has been published in leading medical journals, and he has consulted for hospitals and health systems across the country.",
   authorImage: "",
   readMoreLink: "",
+  photoUrl: '',
+  photoKey: '',
 }
 
 const AboutAuthorSection = () => {
   const homeContent = useAppSelector(state => state.homeContent.homeContent);
   const author = homeContent?.aboutAuthor ?? Author;
+  
   return (
     <section className="section-padding bg-background" id="author">
       <div className="section-container">
@@ -25,7 +27,7 @@ const AboutAuthorSection = () => {
               <div className="mx-auto md:mx-0">
                 <div className="w-40 h-40 md:w-48 md:h-48 rounded-2xl overflow-hidden shadow-card">
                   <img 
-                    src={authorPhoto} 
+                    src={author.photoUrl} 
                     alt="Henry - Author of Beyond the Cure"
                     className="w-full h-full object-cover"
                   />

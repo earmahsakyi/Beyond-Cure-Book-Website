@@ -23,7 +23,7 @@ const sections = [
     description: "Manage downloadable resources for patients and clinicians",
     href: "/resources",
     icon: BookOpen,
-    stats: "12 resources",
+    // stats: "12 resources",
   },
   // {
   //   title: "Media & Speaking",
@@ -36,7 +36,7 @@ const sections = [
     description: "View and manage messages from website visitors",
     href: "/messages",
     icon: Mail,
-    stats: "3 unread",
+    // stats: "3 unread",
   },
 ];
 

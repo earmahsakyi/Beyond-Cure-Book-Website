@@ -32,6 +32,8 @@ interface AboutAuthor {
   longBio: string;
   authorImage: string;
   readMoreLink: string;
+  photoUrl? : string;
+  photoKey?: string
 }
 
 // Audience item type
@@ -166,6 +168,42 @@ export const updateHomeContent = createAsyncThunk<HomeContent,Partial<HomeConten
     }
 )
 
+// New thunk for updating with photo upload
+export const updateHomeContentWithPhoto = createAsyncThunk<
+  HomeContent,
+  { contentData: Partial<HomeContent>; photoFile?: File },
+  { rejectValue: string }
+>(
+  'HomeContent/updateWithPhoto',
+  async ({ contentData, photoFile }, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        setAuthToken(token);
+      }
+
+      const formData = new FormData();
+      
+      // Add photo file if provided
+      if (photoFile) {
+        formData.append('authorPhoto', photoFile);
+      }
+
+      // Add entire content as single JSON blob
+      formData.append('content', JSON.stringify(contentData));
+
+      const config = {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      };
+
+      const res = await axios.put('/api/home-content', formData, config);
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(getErrorMessage(err));
+    }
+  }
+);
+
 
 const homeContentSlice = createSlice({
   name: "homeContent",
@@ -206,6 +244,20 @@ const homeContentSlice = createSlice({
       state.loading = false;
       state.error = action.payload || 'Failed to update content';
     })
+
+    // update homeContent with photo
+    .addCase(updateHomeContentWithPhoto.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(updateHomeContentWithPhoto.fulfilled, (state, action: PayloadAction<HomeContent>) => {
+      state.loading = false;
+      state.homeContent = action.payload;
+    })
+    .addCase(updateHomeContentWithPhoto.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload || 'Failed to update content with photo';
+    });
   }
 
 })

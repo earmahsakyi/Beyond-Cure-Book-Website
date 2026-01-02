@@ -24,6 +24,7 @@ import EmailSubscribers from "./components/admin/EmailSubscribers";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import ContactForm from "./components/sections/ContactForm";
 import MediaSpeaking from "./components/sections/MediaSpeaking";
+import Resources from "./components/sections/Resources";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const AppInner = () => {
           <Route path="/media" element={<MediaSpeaking />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/otp-request" element={<RequestOTP />} />
+          <Route path="/resources-public" element={<Resources />} />
           <Route path="/account-unlock" element={<UnlockAccount />} />
           <Route path="/dashboard" element={<PrivateRoute><Dashboard/> </PrivateRoute>} />
           <Route path="/about" element={<PrivateRoute><AboutEditor/> </PrivateRoute>} />

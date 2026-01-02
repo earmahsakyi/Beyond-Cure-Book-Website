@@ -3,6 +3,7 @@ import authReducer from './authSlice';
 import  homeContentReducer  from './homeContentSlice';
 import emailReducer from './emailSubscribeSlice';
 import contactMessageReducer from './contactMessageSlice';
+import resourceReducer from './resourceSlice';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 
 // Configure the store
@@ -12,7 +13,7 @@ export const store = configureStore({
     homeContent: homeContentReducer,
     email:emailReducer,
     contactMessage: contactMessageReducer,
-    
+    resource:resourceReducer,
   },
 });
 
