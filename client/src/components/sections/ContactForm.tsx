@@ -105,7 +105,7 @@ const ContactForm = () => {
               <Input
                 id="name"
                 type="text"
-                placeholder="John Doe"
+                placeholder="Bill Smith"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
