@@ -53,7 +53,7 @@ const EmailCaptureSection = () => {
   },[dispatch])
 
   return (
-    <section className="section-padding relative overflow-hidden">
+    <section className="section-padding relative overflow-hidden" id="check-list">
       {/* Background panel */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-primary/8 to-accent/5" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_hsl(var(--primary)/0.1),_transparent_50%)]" />

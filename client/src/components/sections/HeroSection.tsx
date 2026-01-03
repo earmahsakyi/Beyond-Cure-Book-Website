@@ -86,7 +86,7 @@ const HeroSection = () => {
                 {hero.primaryCtaText}
               </Button>
               <Button variant="hero-secondary" size="xl" onClick={()=>{
-                window.location.href = hero.secondaryCtaLink}}>
+                window.location.href = "#check-list"}}>
                 <FileText className="mr-2 h-5 w-5" />
                 {hero.secondaryCtaText}
               </Button>
