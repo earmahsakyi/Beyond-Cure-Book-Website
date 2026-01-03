@@ -26,6 +26,8 @@ import ContactForm from "./components/sections/ContactForm";
 import MediaSpeaking from "./components/sections/MediaSpeaking";
 import Resources from "./components/sections/Resources";
 import Disclaimer from "./components/sections/Disclaimer";
+import PrivacyPolicy from "./components/sections/PrivacyPolicy";
+import TermsOfUse from "./components/sections/TermsOfUse";
 
 const queryClient = new QueryClient();
 
@@ -55,9 +57,11 @@ const AppInner = () => {
           <Route path="/media" element={<MediaSpeaking />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route path="/terms-of-use" element={<TermsOfUse />} />
           <Route path="/otp-request" element={<RequestOTP />} />
           <Route path="/resources-public" element={<Resources />} />
           <Route path="/account-unlock" element={<UnlockAccount />} />
+          <Route path="/policy" element={<PrivacyPolicy />} />
           <Route path="/dashboard" element={<PrivateRoute><Dashboard/> </PrivateRoute>} />
           <Route path="/about" element={<PrivateRoute><AboutEditor/> </PrivateRoute>} />
           <Route path="/resources" element={<PrivateRoute><ResourcesManager/> </PrivateRoute>} />

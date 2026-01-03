@@ -7,8 +7,8 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between  items-center gap-4 text-sm text-muted-foreground">
           <p>© {new Date().getFullYear()} Beyond the Cure. All rights reserved.</p>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-primary transition-colors">Terms of Use</a>
+            <a href="/policy" className="hover:text-primary transition-colors">Privacy Policy</a>
+            <a href="/terms-of-use" className="hover:text-primary transition-colors">Terms of Use</a>
             <a href="/disclaimer" className="hover:text-primary transition-colors">Disclaimer</a>
             <a href="/contact" className="hover:text-primary transition-colors">Contact</a>
           </div>
@@ -21,6 +21,9 @@ const Footer = () => {
         <a href="https://www.instagram.com/beyondthecurebook/" className="hover:text-primary transition-colors">
           <Instagram/>
         </a>
+        </div>
+        <div className="text-muted-foreground mt-1 text-center">
+          This website is strictly for Education only. Not medical advice!
         </div>
       </div>
     </footer>
