@@ -2,6 +2,7 @@ import { Mail, Download, Mic, Heart, Brain, Users, Stethoscope, BookOpen } from 
 import { Button } from "@/components/ui/button";
 import BookCover from '@/assets/bookcover.png';
 import authorPhoto from "@/assets/Profile.jpeg";
+import AuthorBio from "../../assets/Authors Bio.pdf"
 
 const speakingTopics = [
   {
@@ -42,7 +43,7 @@ const mediaKitItems = [
     title: "Author Bio",
     description: "Short and long versions of Henry's biography for event programs and articles.",
     format: "PDF",
-    downloadUrl: "#",
+    downloadUrl: AuthorBio,
   },
   {
     title: "Book Cover",

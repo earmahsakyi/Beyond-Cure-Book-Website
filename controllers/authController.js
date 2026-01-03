@@ -98,13 +98,13 @@ exports.AuthUserToken = async (req, res) => {
               <p>Hello,</p>
               <p>We noticed multiple unsuccessful login attempts on your account associated with this email address.</p>
               <p>As a result, your account has been temporarily locked for security reasons.</p>
-              <p>If you believe this was a mistake or you require urgent access, please contact the school administration to have your account reviewed and unlocked.</p>
+              <p>If you believe this was a mistake or you require urgent access, please use the unlock route under the login form to unlock your account!.</p>
               <div style="background-color: #f5f5f5; padding: 15px; margin: 20px 0; border-left: 4px solid #d32f2f;">
                 <strong>Status:</strong> Locked after too many failed attempts<br>
                 <strong>Next step:</strong> Contact admin or wait if this is your 1st or 2nd lock.
               </div>
               <p>If this activity was not initiated by you, we recommend resetting your password after regaining access.</p>
-              <p>Thank you,<br>School Management System Team</p>
+              <p>Thank you,<br>Beyond The Cure</p>
             </div>
           `;
                 // Send mail to locked account
@@ -252,7 +252,7 @@ exports.forgotPassword = async (req, res) => {
         subject: 'Password Reset Verification Code',
         html: `
          <div style="font-family: Arial, sans-serif; background-color: #f9fafc; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; border: 1px solid #e5e7eb;">
-  <h2 style="color: #FF3B30; text-align: center; margin-bottom: 10px;">Trackademy</h2>
+  <h2 style="color: #FF3B30; text-align: center; margin-bottom: 10px;">Beyond The Cure</h2>
   
   <p style="font-size: 16px; color: #333;">Hello,</p>
   <p style="font-size: 16px; color: #333;">
@@ -276,7 +276,7 @@ exports.forgotPassword = async (req, res) => {
   <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;" />
 
   <p style="font-size: 12px; color: #999; text-align: center;">
-    &copy; ${new Date().getFullYear()} Trackademy. All rights reserved.
+    &copy; ${new Date().getFullYear()} Beyond The Cure. All rights reserved.
   </p>
 </div>
 
@@ -381,7 +381,7 @@ exports.RequestOTP =  async (req, res) => {
         subject: 'One Time Passcode',
         html: `
          <div style="font-family: Arial, sans-serif; background-color: #f9fafc; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; border: 1px solid #e5e7eb;">
-            <h2 style="color: #FF3B30; text-align: center; margin-bottom: 10px;">Trackademy</h2>
+            <h2 style="color: #FF3B30; text-align: center; margin-bottom: 10px;">Beyond The Cure</h2>
             
             <p style="font-size: 16px; color: #333;">Hello,</p>
             <p style="font-size: 16px; color: #333;">
@@ -405,7 +405,7 @@ exports.RequestOTP =  async (req, res) => {
             <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;" />
 
             <p style="font-size: 12px; color: #999; text-align: center;">
-                &copy; ${new Date().getFullYear()} Trackademy. All rights reserved.
+                &copy; ${new Date().getFullYear()} Beyond The Cure. All rights reserved.
             </p>
             </div>
 
@@ -464,7 +464,7 @@ exports.unlockUser = async (req, res) => {
       subject: 'Account Unlocked',
       html: `
         <div style="font-family: Arial, sans-serif; background-color: #f9fafc; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; border: 1px solid #e5e7eb;">
-          <h2 style="color: #007AFF; text-align: center; margin-bottom: 10px;">Trackademy</h2>
+          <h2 style="color: #007AFF; text-align: center; margin-bottom: 10px;">Beyond The Cure</h2>
           <p style="font-size: 16px; color: #333;">Hello,</p>
           <p style="font-size: 16px; color: #333;">
             Your account has been unlocked. You can now log in to your account.
@@ -474,7 +474,7 @@ exports.unlockUser = async (req, res) => {
           </p>
           <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;" />
           <p style="font-size: 12px; color: #999; text-align: center;">
-            &copy; ${new Date().getFullYear()} Trackademy. All rights reserved.
+            &copy; ${new Date().getFullYear()} Beyond The Cure. All rights reserved.
           </p>
         </div>
       `
