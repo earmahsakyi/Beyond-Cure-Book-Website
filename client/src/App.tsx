@@ -25,6 +25,7 @@ import PrivateRoute from "./components/routing/PrivateRoute";
 import ContactForm from "./components/sections/ContactForm";
 import MediaSpeaking from "./components/sections/MediaSpeaking";
 import Resources from "./components/sections/Resources";
+import Disclaimer from "./components/sections/Disclaimer";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const AppInner = () => {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/media" element={<MediaSpeaking />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
           <Route path="/otp-request" element={<RequestOTP />} />
           <Route path="/resources-public" element={<Resources />} />
           <Route path="/account-unlock" element={<UnlockAccount />} />
