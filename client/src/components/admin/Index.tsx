@@ -4,6 +4,7 @@ import { DashboardCard } from "@/components/admin/DashboardCard";
 import { useEffect } from "react";
 import { useAppSelector,useAppDispatch } from "@/store/store";
 import { getAllContactMessages } from "@/store/contactMessageSlice";
+import { getAllResources } from "@/store/resourceSlice";
 
 const sections = [
   {
@@ -43,10 +44,17 @@ const sections = [
 const Index = () => {
   const dispatch = useAppDispatch()
   const unreadCount = useAppSelector(state => state.contactMessage.unreadCount);
-  console.log(unreadCount)
+  const resources = useAppSelector(state => state.resource.resources);
+
   useEffect(()=> {
     dispatch(getAllContactMessages())
   },[dispatch])
+
+  useEffect(()=> {
+    dispatch(getAllResources())
+  },[dispatch])
+
+
   return (
     <AdminLayout
       title="Dashboard"
@@ -56,7 +64,7 @@ const Index = () => {
       <div className="mb-8 grid gap-4 sm:grid-cols-3">
         <div className="admin-card">
           <p className="text-sm font-medium text-muted-foreground">Total Resources</p>
-          <p className="mt-1 text-2xl font-bold text-foreground">12</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">{resources?.length}</p>
         </div>
         <div className="admin-card">
           <p className="text-sm font-medium text-muted-foreground">Unread Messages</p>

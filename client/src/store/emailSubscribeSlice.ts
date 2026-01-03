@@ -43,8 +43,8 @@ const getErrorMessage = (error :unknown): string => {
 
 interface EmailState {
     loading: boolean;
-    emails: Emailresponse | null;
-    error : string;
+    emails: Emailresponse[] | null;
+    error : string| null;
     message: string | null;
 
 };
@@ -65,7 +65,7 @@ const initialState:EmailState = {
 
 //async thunks
 
-export const getEmails = createAsyncThunk<Emailresponse,void, {rejectValue:string}>(
+export const getEmails = createAsyncThunk<Emailresponse[],void, {rejectValue:string}>(
     'emailSubscribe/get',
     async(_, {rejectWithValue })=> {
         try{
@@ -112,7 +112,7 @@ const emailSubscribeSlice = createSlice({
             state.loading = true;
             state.error = null;
         })
-        .addCase(getEmails.fulfilled, (state,action:PayloadAction<Emailresponse> )=> {
+        .addCase(getEmails.fulfilled, (state,action:PayloadAction<Emailresponse[]> )=> {
             state.loading = false;
             state.emails = action.payload
         })
