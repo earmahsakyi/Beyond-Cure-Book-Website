@@ -44,6 +44,13 @@ const Login = () => {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+    if (!formData.email || !formData.password){
+           toast({
+            title: "All fields are required!",
+            description: "Enter a valid email and password"
+    })
+    return;
+    }
     try{
         await dispatch(login(formData)).unwrap()
     }catch(err){

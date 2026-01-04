@@ -7,11 +7,15 @@ const {
   deleteContactMessage
 } = require('../controllers/contactMessageController');
 const auth = require('../middleware/auth'); 
+const getClientIp = require('../middleware/getClientIp');
+const {sendMessageLimiter} = require('../middleware/rateLimiter');
+
+router.use(getClientIp);
 
 // @route   POST /api/contact
 // @desc    Submit a contact form message
 // @access  Public
-router.post('/', submitContactMessage);
+router.post('/',sendMessageLimiter, submitContactMessage);
 
 // @route   GET /api/contact
 // @desc    Get all contact messages (admin only)
