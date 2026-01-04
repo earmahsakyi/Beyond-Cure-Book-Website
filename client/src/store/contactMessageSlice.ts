@@ -67,6 +67,7 @@ interface MarkAsReadParams {
 // Error response type
 interface ErrorResponse {
   message?: string;
+  msg?: string;
 }
 
 // Redux state type
@@ -97,6 +98,7 @@ const getErrorMessage = (error: unknown): string => {
     const axiosError = error as AxiosError<ErrorResponse>;
     return (
       axiosError.response?.data?.message ||
+      axiosError.response?.data?.msg ||
       'An error occurred'
     );
   }
