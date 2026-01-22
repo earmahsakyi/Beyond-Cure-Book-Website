@@ -43,8 +43,9 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-                {hero.badgeText}
+              <span className="inline-block px-4 py-1.5 rounded-2xl text-center md:text-left bg-primary/10 text-primary text-xl md:text-2xl font-medium mb-6 shadow-lg">
+                {/* {hero.badgeText} */}
+                 Edited by Michael McConnell,<span className="italic"> New York Times</span> bestselling editor and Joseph Garner, MD, Emeritus Professor of Medicine.
               </span>
             </motion.div>
 
