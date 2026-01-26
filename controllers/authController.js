@@ -149,8 +149,12 @@ exports.AuthUserToken = async (req, res) => {
             {expiresIn: '1d'},
             (err, token) => {
                 if(err) throw err;
-                res.json({
-                    token,
+                res.cookie('token',token,{
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'strict', // CSRF protection
+                    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+                }).json({
                     role:admin.role,
                     adminId:admin.id
                 })
@@ -198,8 +202,12 @@ exports.registerAdmin = async (req,res) => {
             {expiresIn: '1d'},
             (err, token) => {
                 if(err) throw err;
-                res.json({
-                    token,
+                res.cookie('token',token,{
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'strict', // CSRF protection
+                    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+                }).json({
                     role:admin.role,
                     adminId:admin.id
                 })

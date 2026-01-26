@@ -1,5 +1,7 @@
 import {createSlice, createAsyncThunk, PayloadAction, } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { error } from 'console';
+
 
 
  //type definitions 
@@ -25,7 +27,6 @@ interface AuthState {
 
 //API response Type
 interface AuthResponse {
-    token: string;
     role: string;
     admin: string;
 }
@@ -83,14 +84,8 @@ interface UnlockAccountData {
 
 
 //helper function 
-const setAuthToken = (token : string | null): void => {
-    if (token){
-        axios.defaults.headers.common['x-auth-token'] = token;
-        localStorage.setItem('token',token);
-    }else {
-       delete axios.defaults.headers.common['x-auth-token'];
-        localStorage.removeItem('token');
-    }
+const setAuthToken = (): void => {
+  axios.defaults.withCredentials = true;
 } 
 
 //helper to extract error messages
@@ -111,7 +106,7 @@ const getErrorMessage = (error :unknown): string => {
 
 //initial state
 const initialState: AuthState = {
-    token : localStorage.getItem('token'),
+    token : null,
     isAuthenticated: false,
     loading: false,
     user: null,
@@ -131,10 +126,7 @@ export const loadUser = createAsyncThunk<
     'auth/loadUser',
     async (_, {rejectWithValue }) => {
        try {
-        const token = localStorage.getItem('token');
-        if (token){
-            setAuthToken(token);
-        }
+        setAuthToken()
         const res = await axios.get<UserResponse>('/api/auth');
         return res.data;
 
@@ -292,7 +284,7 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         logout: (state )=> {
-            setAuthToken(null);
+            axios.post('/api/auth/logout').catch(console.error)
             localStorage.removeItem('token');
             localStorage.removeItem('email');
             state.token = null;
@@ -342,9 +334,8 @@ const authSlice = createSlice({
       })
       .addCase(register.fulfilled, (state, action: PayloadAction<AuthResponse>) => {
         state.loading = false;
-        state.token = action.payload.token;
         state.isAuthenticated = true;
-        setAuthToken(action.payload.token);
+      
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
@@ -358,9 +349,9 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action: PayloadAction<AuthResponse>) => {
         state.loading = false;
-        state.token = action.payload.token;
+
         state.isAuthenticated = true;
-        setAuthToken(action.payload.token);
+        
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;

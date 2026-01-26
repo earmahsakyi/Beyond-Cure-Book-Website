@@ -92,14 +92,8 @@ export interface HomeContent {
 
 
 //helper function 
-const setAuthToken = (token : string | null): void => {
-    if (token){
-        axios.defaults.headers.common['x-auth-token'] = token;
-        localStorage.setItem('token',token);
-    }else {
-        delete axios.defaults.headers.common['x-auth-token'];
-        localStorage.removeItem('token');
-    }
+const setAuthToken = (): void => {
+    axios.defaults.withCredentials = true;
 } 
 
 //helper to extract error messages
@@ -136,10 +130,9 @@ export const getHomeContent = createAsyncThunk<HomeContent,void,{rejectValue:str
     'homeContent/get',
     async(_, {rejectWithValue }) => {
         try {
-            const token = localStorage.getItem('token');
-            if(token){
-                setAuthToken(token)
-            }
+           
+                setAuthToken()
+            
            
             const res = await axios.get<HomeContent>('/api/home-content')
             return res.data
@@ -153,13 +146,12 @@ export const updateHomeContent = createAsyncThunk<HomeContent,Partial<HomeConten
     'HomeContent/update',
     async(contentData,{rejectWithValue})=> {
         try{
-            const token = localStorage.getItem('token');
-            if(token){
-                setAuthToken(token)
-            }
+           
+              setAuthToken()
+            
              const config = {
-            headers: { 'Content-Type': 'application/json' }
-            };
+              headers: { 'Content-Type': 'application/json' }
+             }
             const res = await axios.put('/api/home-content',contentData,config)
             return res.data;
         }catch(err){
@@ -177,10 +169,9 @@ export const updateHomeContentWithPhoto = createAsyncThunk<
   'HomeContent/updateWithPhoto',
   async ({ contentData, photoFile }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      if (token) {
-        setAuthToken(token);
-      }
+    
+        setAuthToken();
+  
 
       const formData = new FormData();
       

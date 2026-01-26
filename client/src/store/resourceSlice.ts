@@ -79,12 +79,8 @@ interface ResourceState {
 
 
 // HELPER FUNCTIONS
-const setAuthToken = (token: string | null): void => {
-  if (token) {
-    axios.defaults.headers.common['x-auth-token'] = token;
-  } else {
-    delete axios.defaults.headers.common['x-auth-token'];
-  }
+const setAuthToken = (): void => {
+   axios.defaults.withCredentials = true;
 };
 
 const getErrorMessage = (error: unknown): string => {
@@ -121,10 +117,9 @@ export const uploadResource = createAsyncThunk<
   'resource/upload',
   async (resourceData, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      if (token) {
-        setAuthToken(token);
-      }
+      
+        setAuthToken();
+      
 
       // Create FormData for file upload
       const formData = new FormData();
@@ -162,10 +157,9 @@ export const getAllResources = createAsyncThunk<
   'resource/getAll',
   async (params, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      if (token) {
-        setAuthToken(token);
-      }
+     
+        setAuthToken();
+      
 
       // Build query string
       const queryParams = new URLSearchParams();
@@ -224,10 +218,9 @@ export const updateResource = createAsyncThunk<
   'resource/update',
   async (updateData, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      if (token) {
-        setAuthToken(token);
-      }
+     
+        setAuthToken();
+     
 
       const { id, ...data } = updateData;
 
@@ -257,10 +250,9 @@ export const deleteResource = createAsyncThunk<
   'resource/delete',
   async (id, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      if (token) {
-        setAuthToken(token);
-      }
+      
+        setAuthToken();
+      
 
       await axios.delete(`${API_URL}/${id}`);
       return id; // Return the ID so we can remove it from state

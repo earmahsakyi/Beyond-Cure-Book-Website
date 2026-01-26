@@ -85,12 +85,8 @@ interface ContactMessageState {
 // HELPER FUNCTIONS
 
 
-const setAuthToken = (token: string | null): void => {
-  if (token) {
-    axios.defaults.headers.common['x-auth-token'] = token;
-  } else {
-    delete axios.defaults.headers.common['x-auth-token'];
-  }
+const setAuthToken = (): void => {
+  axios.defaults.withCredentials = true;
 };
 
 const getErrorMessage = (error: unknown): string => {
@@ -158,10 +154,10 @@ export const getAllContactMessages = createAsyncThunk<
   'contactMessage/getAll',
   async (params, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      if (token) {
-        setAuthToken(token);
-      }
+      
+   
+        setAuthToken();
+      
 
      const queryParams = new URLSearchParams();
       
@@ -197,10 +193,10 @@ export const markAsRead = createAsyncThunk<
   'contactMessage/markAsRead',
   async ({ id, isRead = true }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      if (token) {
-        setAuthToken(token);
-      }
+      
+      
+        setAuthToken();
+      
 
       const config = {
         headers: { 'Content-Type': 'application/json' }
@@ -228,10 +224,10 @@ export const deleteContactMessage = createAsyncThunk<
   'contactMessage/delete',
   async (id, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      if (token) {
-        setAuthToken(token);
-      }
+      
+      
+        setAuthToken();
+     
 
       await axios.delete(`${API_URL}/${id}`);
       return id; // Return the ID so we can remove it from state

@@ -28,27 +28,23 @@ import Resources from "./components/sections/Resources";
 import Disclaimer from "./components/sections/Disclaimer";
 import PrivacyPolicy from "./components/sections/PrivacyPolicy";
 import TermsOfUse from "./components/sections/TermsOfUse";
+import AuthProvider from "./components/routing/AuthProvider";
 
 const queryClient = new QueryClient();
 
 
 const AppInner = () => {
-  const dispatch = useAppDispatch()
 
-  useEffect(()=> {
-    const token = localStorage.getItem('token')
-    if(token){
-      dispatch(loadUser())
-    }
-  },[dispatch])
 
   return (
+    <AuthProvider>
       <BrowserRouter
        future={{
       v7_relativeSplatPath: true,
       v7_startTransition: true,
     }}
       >
+        
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
@@ -74,6 +70,7 @@ const AppInner = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      </AuthProvider>
   )
 }
 

@@ -7,11 +7,11 @@ interface ProtectedRouteProps {
 }
 
 const PrivateRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated, loading, token } = useAppSelector(state => state.auth);
+  const { isAuthenticated, loading } = useAppSelector(state => state.auth);
 
   //  Wait for auth check to complete
   // If we have a token and are still loading, show spinner
-  if (loading || (token && !isAuthenticated)) {
+  if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -21,7 +21,7 @@ const PrivateRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }
 
   // After loading completes, check authentication
-  if (!isAuthenticated || !token) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 

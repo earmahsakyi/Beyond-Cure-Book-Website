@@ -6,6 +6,7 @@ const getClientIp = require('./middleware/getClientIp');
 const path = require("path");
 const helmet = require('helmet');
 const cors = require('cors');
+const cookieParser =require ('cookie-parser')
 
 
 
@@ -19,6 +20,7 @@ connectDB();
 
 //body paser
 app.use(express.json({extended: false}));
+app.use(cookieParser())
 
 // Security middleware
 app.use(
@@ -51,7 +53,12 @@ app.use(
 app.set('trust proxy', 1);
 
 // CORS
-app.use(cors());
+app.use(cors(
+  {
+  origin: 'http://localhost:3000',
+  credentials: true
+}
+));
 
 
 // Extract client IP for all routes

@@ -65,5 +65,9 @@ router.post('/otp',passwordResetLimiter,[
 //unlock route
 router.post('/unlock',passwordResetLimiter,SecretKey, authController.unlockUser);
 
+router.post('/logout', (req, res) => {
+  res.clearCookie('token').json({ message: 'Logged out successfully' });
+});
+
 
 module.exports = router;

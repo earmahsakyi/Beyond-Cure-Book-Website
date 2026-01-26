@@ -85,7 +85,7 @@ const ForgotPassword = () => {
         </p>
 
         {error && (
-          <div className="text-center p-4 border-2 border-red-300 text-red-600 bg-red-200 mt-4 rounded-2xl">
+          <div className="text-center py-1 px-1 mb-3  text-red-700 mt-4">
             {error}
           </div>
         )}
