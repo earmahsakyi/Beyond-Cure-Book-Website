@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk, PayloadAction, } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { error } from 'console';
+
 
 
 
@@ -17,7 +17,6 @@ import { error } from 'console';
 
  //Auth state interface
 interface AuthState {
-    token: string | null;
     isAuthenticated: boolean;
     loading: boolean;
     user : User | null;
@@ -106,7 +105,6 @@ const getErrorMessage = (error :unknown): string => {
 
 //initial state
 const initialState: AuthState = {
-    token : null,
     isAuthenticated: false,
     loading: false,
     user: null,
@@ -285,9 +283,7 @@ const authSlice = createSlice({
     reducers: {
         logout: (state )=> {
             axios.post('/api/auth/logout').catch(console.error)
-            localStorage.removeItem('token');
             localStorage.removeItem('email');
-            state.token = null;
             state.isAuthenticated = false;
             state.user = null;
             state.loading = false;
@@ -322,7 +318,6 @@ const authSlice = createSlice({
         })
         .addCase(loadUser.rejected, (state, action) => {
         state.loading = false;
-        state.token = null;
         state.isAuthenticated = false;
         state.user = null;
         state.error = action.payload || 'Failed to load user';

@@ -17,7 +17,7 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { toast } = useToast();
-  const { loading, error, message } = useAppSelector(state => state.auth);
+  const { loading, message } = useAppSelector(state => state.auth);
 
   const [formData, setFormData] = useState<ResetFormData>({
     email: '',
@@ -83,12 +83,6 @@ const ForgotPassword = () => {
         <p className="mt-2 text-center text-sm text-muted-foreground">
           Remember your password? <Link to="/login" className="underline">Login here</Link>
         </p>
-
-        {error && (
-          <div className="text-center py-1 px-1 mb-3  text-red-700 mt-4">
-            {error}
-          </div>
-        )}
 
         <form onSubmit={onSubmit} className="mt-6 space-y-5">
           <div className="space-y-2">

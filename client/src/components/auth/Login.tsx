@@ -22,7 +22,7 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { toast } = useToast();
-  const { loading, error, isAuthenticated } = useAppSelector(state => state.auth)
+  const { loading, isAuthenticated } = useAppSelector(state => state.auth)
 
 
    const [formData, setFormData] = useState<LoginFormData>({
@@ -72,7 +72,7 @@ const Login = () => {
       setTimeout(()=>{
         dispatch(clearMessage())
         navigate('/dashboard');
-      },1500)
+      },1000)
       
     }
   }, [isAuthenticated, navigate,toast,dispatch]);
@@ -93,11 +93,7 @@ const Login = () => {
         <p className="mt-2 text-center text-sm text-muted-foreground">
           Forgot password? <Link to="/forgot-password" className="underline">Reset it</Link>
         </p>
-        { error && (
-          <div className="text-center py-1 px-1 mb-3  text-red-700 mt-4 ">
-            {error}
-            </div>
-        )}
+       
         <form onSubmit={onSubmit} className="mt-6 space-y-5">
           <div className="space-y-2"> 
             <Label htmlFor="email">Email</Label>

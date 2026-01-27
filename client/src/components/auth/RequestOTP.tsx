@@ -17,7 +17,7 @@ const RequestOTP = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { toast } = useToast();
-  const { loading, error, message } = useAppSelector(state => state.auth);
+  const { loading, message } = useAppSelector(state => state.auth);
 
   const [formData, setFormData] = useState<ResetFormData>({
     email: '',
@@ -82,11 +82,7 @@ const RequestOTP = () => {
         <h1 className="text-center text-2xl font-bold font-heading">Rquest for OTP</h1>
         
 
-        {error && (
-          <div className="text-center py-1 px-1 mb-3  text-red-700 mt-4">
-            {error}
-          </div>
-        )}
+        
 
         <form onSubmit={onSubmit} className="mt-6 space-y-5">
           <div className="space-y-2">

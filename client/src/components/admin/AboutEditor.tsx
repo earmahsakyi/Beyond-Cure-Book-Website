@@ -39,7 +39,7 @@ const AboutEditor = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
-  console.log(content.photoUrl)
+  
 
   useEffect(() => {
     if (homeContent === null) {

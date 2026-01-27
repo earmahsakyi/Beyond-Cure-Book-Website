@@ -7,7 +7,7 @@ import { getPublicResources, type Resource } from "@/store/resourceSlice";
 const Resources = () => {
   const dispatch = useAppDispatch();
   const { publicResources, loading, error } = useAppSelector(state => state.resource);
-  console.log(publicResources)
+  
   
   //  Fetch resources on mount
   useEffect(() => {

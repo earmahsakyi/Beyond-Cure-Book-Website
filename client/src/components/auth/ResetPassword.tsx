@@ -26,7 +26,7 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { toast } = useToast();
-  const { loading, error, message } = useAppSelector(state => state.auth);
+  const { loading, message } = useAppSelector(state => state.auth);
 
   const [formData, setFormData] = useState<ResetFormData>({
     email: '',
@@ -177,11 +177,7 @@ const ResetPassword = () => {
           Enter the verification code and your new password
         </p>
 
-        {error && (
-          <div className="text-center py-1 px-1 mb-3  text-red-700 mt-4">
-            {error}
-          </div>
-        )}
+    
 
         <form onSubmit={onSubmit} className="mt-6 space-y-5">
           {/* Verification Code */}
