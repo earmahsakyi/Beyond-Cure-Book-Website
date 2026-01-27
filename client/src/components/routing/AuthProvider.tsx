@@ -31,7 +31,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        <p className="mt-4 text-muted-foreground">Loading Dashboard...</p>
+        <p className="mt-4 text-muted-foreground">Loading...</p>
       </div>
     );
   }
